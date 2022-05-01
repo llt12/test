@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yanqun.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="org.yanqun.entity.Student">
+    <id column="STUNO" jdbcType="DECIMAL" property="stuno" />
+    <result column="STUNAME" jdbcType="VARCHAR" property="stuname" />
+    <result column="STUAGE" jdbcType="DECIMAL" property="stuage" />
+    <result column="GRANAME" jdbcType="VARCHAR" property="graname" />
+    <result column="CARID" jdbcType="VARCHAR" property="carid" />
+    <result column="CLASSID" jdbcType="DECIMAL" property="classid" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    STUNO, STUNAME, STUAGE, GRANAME, CARID, CLASSID
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from STUDENT
+    where STUNO = #{stuno,jdbcType=DECIMAL}
+  </select>
+
+
+  <select id="selectByKey" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from STUDENT
+    where STUNO = #{stuno}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+    delete from STUDENT
+    where STUNO = #{stuno,jdbcType=DECIMAL}
+  </delete>
+
+  <insert id="insert" parameterType="org.yanqun.entity.Student">
+    insert into STUDENT (STUNO, STUNAME, STUAGE, 
+      GRANAME, CARID, CLASSID
+      )
+    values (#{stuno,jdbcType=DECIMAL}, #{stuname,jdbcType=VARCHAR}, #{stuage,jdbcType=DECIMAL}, 
+      #{graname,jdbcType=VARCHAR}, #{carid,jdbcType=VARCHAR}, #{classid,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.yanqun.entity.Student">
+    insert into STUDENT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuno != null">
+        STUNO,
+      </if>
+      <if test="stuname != null">
+        STUNAME,
+      </if>
+      <if test="stuage != null">
+        STUAGE,
+      </if>
+      <if test="graname != null">
+        GRANAME,
+      </if>
+      <if test="carid != null">
+        CARID,
+      </if>
+      <if test="classid != null">
+        CLASSID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stuno != null">
+        #{stuno,jdbcType=DECIMAL},
+      </if>
+      <if test="stuname != null">
+        #{stuname,jdbcType=VARCHAR},
+      </if>
+      <if test="stuage != null">
+        #{stuage,jdbcType=DECIMAL},
+      </if>
+      <if test="graname != null">
+        #{graname,jdbcType=VARCHAR},
+      </if>
+      <if test="carid != null">
+        #{carid,jdbcType=VARCHAR},
+      </if>
+      <if test="classid != null">
+        #{classid,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="org.yanqun.entity.Student">
+    update STUDENT
+    <set>
+      <if test="stuname != null">
+        STUNAME = #{stuname,jdbcType=VARCHAR},
+      </if>
+      <if test="stuage != null">
+        STUAGE = #{stuage,jdbcType=DECIMAL},
+      </if>
+      <if test="graname != null">
+        GRANAME = #{graname,jdbcType=VARCHAR},
+      </if>
+      <if test="carid != null">
+        CARID = #{carid,jdbcType=VARCHAR},
+      </if>
+      <if test="classid != null">
+        CLASSID = #{classid,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where STUNO = #{stuno,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yanqun.entity.Student">
+    update STUDENT
+    set STUNAME = #{stuname,jdbcType=VARCHAR},
+      STUAGE = #{stuage,jdbcType=DECIMAL},
+      GRANAME = #{graname,jdbcType=VARCHAR},
+      CARID = #{carid,jdbcType=VARCHAR},
+      CLASSID = #{classid,jdbcType=DECIMAL}
+    where STUNO = #{stuno,jdbcType=DECIMAL}
+  </update>
+
+  <select id="selectoneStudent" resultType="student" parameterType="int">
+
+    select * from student where stuno=${value}
+  </select>
+
+  <select id="selectIFStudent" resultType="student" parameterType="int">
+
+    select * from student <where>
+    <if test="stuno !=null and stuno !=''">
+      and stuno=#{stuno}
+    </if>
+    <if test="stuname !=null and stuname !=''">
+      and stuname=#{stuname}
+    </if>
+
+  </where>
+  </select>
+</mapper>
